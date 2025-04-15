@@ -1,53 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Caesar Cipher</title>
-  <style>
-    body { font-family: Arial; text-align: center; padding: 20px; background: #111; color: white; }
-    input, button { padding: 10px; margin: 10px; }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Encrypted Caesar Cipher</title>
+    <style>
+        body {
+            background-color: #1e1e2f;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #00aaff;
+        }
+
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+        }
+
+        #result, #guessResult {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Encrypted Caesar Cipher</h1>
-  <p>Enter your full name:</p>
-  <input type="text" id="plaintext" placeholder="Your Name" />
-  <button onclick="encrypt()">Encrypt</button>
-  <p id="encrypted"></p>
+    <div class="container">
+        <h1>Encrypted Caesar Cipher</h1>
+        <label for="plaintext">Enter your full name:</label><br />
+        <input type="text" id="plaintext" placeholder="e.g. Mitchel Weber" /><br />
+        <button onclick="encrypt()">Encrypt</button>
 
-  <script>
-    function getRandomInt(max) {
-      return Math.floor(Math.random() * max);
-    }
+        <div id="result"></div>
 
-    function encrypt() {
-      const input = document.getElementById('plaintext').value;
-      const shift = getRandomInt(25) + 1;
-      let encrypted = '';
+        <div id="guessSection" style="display: none;">
+            <label for="guess">Guess the shift key:</label><br />
+            <input type="number" id="guess" min="0" max="25" />
+            <button onclick="submitGuess()">Submit Guess</button>
+            <div id="guessResult"></div>
+        </div>
+    </div>
 
-      for (let i = 0; i < input.length; i++) {
-        const ch = input[i];
-        if (/[a-zA-Z]/.test(ch)) {
-          const base = ch === ch.toUpperCase() ? 65 : 97;
-          const code = ((ch.toLowerCase().charCodeAt(0) - 97 + shift) % 26) + 97;
-          let shifted = String.fromCharCode(code);
-          // Randomize case
-          if (Math.random() > 0.5) shifted = shifted.toUpperCase();
-          encrypted += shifted;
+    <script>
+        let actualKey = 0;
+        let encryptedText = "";
 
-          // Add noise
-          if (Math.random() > 0.5) {
-            const noiseChar = String.fromCharCode(97 + getRandomInt(26));
-            encrypted += noiseChar;
-          }
-        } else {
-          encrypted += ch;
+        function encrypt() {
+            const text = document.getElementById("plaintext").value;
+            if (!text.trim()) {
+                alert("Please enter your full name.");
+                return;
+            }
+
+            actualKey = Math.floor(Math.random() * 26);
+            encryptedText = "";
+
+            for (let char of text) {
+                if (/[a-zA-Z]/.test(char)) {
+                    const isUpper = char === char.toUpperCase();
+                    const base = isUpper ? 65 : 97;
+                    const shifted = ((char.charCodeAt(0) - base + actualKey) % 26) + base;
+                    encryptedText += String.fromCharCode(shifted);
+                } else {
+                    encryptedText += char;
+                }
+            }
+
+            document.getElementById("result").innerText =
+                `Encrypted Text: ${encryptedText}`;
+            document.getElementById("guessSection").style.display = "block";
+            document.getElementById("guessResult").innerText = "";
         }
-      }
 
-      document.getElementById('encrypted').textContent = `Encrypted Text: ${encrypted}\n(Shift Key: ${shift})`;
-      console.log(`Encrypted with shift key: ${shift}`);
-    }
-  </script>
+        function submitGuess() {
+            const userGuess = parseInt(document.getElementById("guess").value);
+            if (isNaN(userGuess)) {
+                alert("Please enter a number between 0 and 25.");
+                return;
+            }
+
+            if (userGuess === actualKey) {
+                document.getElementById("guessResult").innerText = "Correct! You guessed the shift key!";
+            } else {
+                document.getElementById("guessResult").innerText = "Incorrect guess. Try again!";
+            }
+        }
+    </script>
 </body>
 </html>
