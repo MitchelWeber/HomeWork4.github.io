@@ -13,19 +13,20 @@
 
     <main>
         <section class="intro">
+            <h2>Welcome to My Caesar Cipher Project</h2>
             <p>This is a simple demonstration of the Caesar Cipher encryption method. The cipher works by shifting each letter of the plaintext by a certain number of positions in the alphabet.</p>
             <p>In this project, you will be able to:</p>
             <ul>
                 <li>Enter your full name as plaintext.</li>
                 <li>Encrypt your name using a Caesar Cipher with a shift of your choice.</li>
-                <li>Guess the correct shift key to decrypt the ciphered text.</li>
+                <li>Try guessing the correct shift key to decrypt the ciphered text.</li>
             </ul>
         </section>
 
         <section class="usage">
             <h3>How to Use</h3>
-            <p>To use the cipher, input your full name below, and choose a shift key to encrypt the text. You can then try to guess the key to decrypt it.</p>
-            <form action="caesar_cipher.py" method="POST">
+            <p>To use the cipher, input your full name below, and choose a shift key to encrypt the text.</p>
+            <form id="cipherForm">
                 <label for="plaintext">Enter your full name:</label>
                 <input type="text" id="plaintext" name="plaintext" required><br><br>
 
@@ -37,8 +38,8 @@
         </section>
 
         <section class="results">
-            <h3>Results</h3>
-            <p>Once you submit your input, you will see the ciphered text and can begin guessing the correct shift key.</p>
+            <h3>Encrypted Text</h3>
+            <p id="cipherText">Your encrypted text will appear here.</p>
         </section>
 
         <section class="attack-explanation">
@@ -51,5 +52,38 @@
     <footer>
         <p>&copy; 2025 Mitchel Weber. All Rights Reserved.</p>
     </footer>
+
+    <script>
+        // Caesar Cipher encryption function
+        function caesarCipher(plaintext, shift) {
+            let encryptedText = '';
+            for (let i = 0; i < plaintext.length; i++) {
+                let char = plaintext[i];
+                if (char.match(/[a-zA-Z]/)) {
+                    const charCode = plaintext.charCodeAt(i);
+                    const base = (char >= 'a' && char <= 'z') ? 97 : 65; // Determine if char is upper or lower case
+                    encryptedText += String.fromCharCode((charCode - base + shift) % 26 + base);
+                } else {
+                    encryptedText += char; // Non-alphabetic characters remain unchanged
+                }
+            }
+            return encryptedText;
+        }
+
+        // Event listener for form submission
+        document.getElementById('cipherForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent page reload on form submission
+
+            // Get user input
+            const plaintext = document.getElementById('plaintext').value;
+            const shift = parseInt(document.getElementById('shift').value);
+
+            // Encrypt the plaintext
+            const encryptedText = caesarCipher(plaintext, shift);
+
+            // Display the result
+            document.getElementById('cipherText').innerText = `Encrypted Text: ${encryptedText}`;
+        });
+    </script>
 </body>
 </html>
