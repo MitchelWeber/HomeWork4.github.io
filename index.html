@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS 32301 Homework 4 - Caesar Cipher</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Caesar Cipher Encryption</h1>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Welcome to My Caesar Cipher Project</h2>
+            <p>This is a simple demonstration of the Caesar Cipher encryption method. The cipher works by shifting each letter of the plaintext by a certain number of positions in the alphabet.</p>
+            <p>In this project, you will be able to:</p>
+            <ul>
+                <li>Enter your full name as plaintext.</li>
+                <li>Encrypt your name using a Caesar Cipher with a shift of your choice.</li>
+                <li>Guess the correct shift key to decrypt the ciphered text.</li>
+            </ul>
+        </section>
+
+        <section class="usage">
+            <h3>How to Use</h3>
+            <p>To use the cipher, input your full name below, and choose a shift key to encrypt the text. You can then try to guess the key to decrypt it.</p>
+            <form action="caesar_cipher.py" method="POST">
+                <label for="plaintext">Enter your full name:</label>
+                <input type="text" id="plaintext" name="plaintext" required><br><br>
+
+                <label for="shift">Enter a shift key (0-25):</label>
+                <input type="number" id="shift" name="shift" min="0" max="25" required><br><br>
+
+                <button type="submit">Encrypt</button>
+            </form>
+        </section>
+
+        <section class="results">
+            <h3>Results</h3>
+            <p>Once you submit your input, you will see the ciphered text and can begin guessing the correct shift key.</p>
+        </section>
+
+        <section class="attack-explanation">
+            <h3>How an Attacker Can Break This Cipher</h3>
+            <p>The Caesar Cipher is a substitution cipher, meaning each letter is replaced by another letter in the alphabet. Since the number of possible shift values is limited (only 25), an attacker can simply try all the possible shifts (brute force attack) and check for a meaningful result.</p>
+            <p>This is why the Caesar Cipher is not secure for modern encryption needs, as it is relatively easy to break with enough time or computational power.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Mitchel Weber. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
