@@ -1,4 +1,4 @@
-# Caesar Cipher Encryption
+# HomeWork4
 
 ## Description
 This project demonstrates an Caesar Cipher encryption method designed for Homework 4 of HCI.
